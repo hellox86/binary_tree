@@ -11,7 +11,7 @@ class Node {
     this.right = r;
   }
 }
-let root;
+let root = null;
 
 function init_tree(data) {
   root = new Node(data, null, null);
@@ -34,43 +34,131 @@ function add_el_to_tree(r, data) {
     }
   }
 }
-function remove_el_from_tree(r, data) {}
-init_tree(0);
-for (let i = 1; i < 20; i++) {
-  add_el_to_tree(root, i * 2);
-}
-function get_count(r, c = 0) {
+
+function min_in_tree(r, data = -1) {
   if (r != null) {
-    if (r.left != null) {
-      return get_count(r.left, c + 1);
-    } else {
-      return get_count(r.right, c + 1);
-    }
+    return min_in_tree(r.left, r.data);
   } else {
-    return c;
+    return data;
+  }
+}
+// Помогло с функцией удаления: https://ru.stackoverflow.com/questions/660940/%D0%A3%D0%B4%D0%B0%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5-%D0%B8%D0%B7-%D0%B1%D0%B8%D0%BD%D0%B0%D1%80%D0%BD%D0%BE%D0%B3%D0%BE-%D0%B4%D0%B5%D1%80%D0%B5%D0%B2%D0%B0
+
+function remove_el_from_tree(r, data, parent) {
+  if (r != null) {
+    if (data > r.data) {
+      return remove_el_from_tree(r.right, data, r);
+    } else if (data < r.data) {
+      return remove_el_from_tree(r.left, data, r);
+    } else {
+      if (r.left == null && r.right == null) {
+        if (parent != null) {
+          if (parent.left === r) {
+            parent.left = null;
+          }
+        }
+        if (parent.right === r) {
+          parent.right = null;
+        }
+        r = null;
+      } else if (r.left == null || r.right == null) {
+        let toRemove = null;
+        if (r.left != null) {
+          toRemove = r.left;
+        }
+        if (r.right != null) {
+          toRemove = r.right;
+        }
+        r.data = toRemove.data;
+        r.left = toRemove.left;
+        r.right = toRemove.right;
+      } else if (r.left != null && r.right != null) {
+        if (r.right.left != null) {
+          r.data = min_in_tree(r.right);
+        } else {
+          r.data = r.right.data;
+          r.right = null;
+          r.right = r.right.right;
+        }
+      }
+    }
+  }
+}
+
+init_tree(14);
+add_el_to_tree(root, 1);
+add_el_to_tree(root, 653);
+add_el_to_tree(root, 45);
+add_el_to_tree(root, 0);
+add_el_to_tree(root, 95);
+add_el_to_tree(root, 11);
+add_el_to_tree(root, 8);
+add_el_to_tree(root, 13);
+add_el_to_tree(root, 28);
+add_el_to_tree(root, 4);
+add_el_to_tree(root, 5);
+add_el_to_tree(root, 111);
+add_el_to_tree(root, 6775);
+add_el_to_tree(root, 541);
+add_el_to_tree(root, 96);
+add_el_to_tree(root, 6);
+
+// function get_count(r, c = 0) {
+//   if (r != null) {
+//     if (r.left != null) {
+//       return get_count(r.left, c + 1);
+//     } else {
+//       return get_count(r.right, c + 1);
+//     }
+//   } else {
+//     return c;
+//   }
+// }
+
+function left_iterate(r) {
+  // debugger;
+  if (r != null) {
+    console.log(r.data);
+    if (r.right != null) {
+      console.log(r.right.data);
+    }
+    return left_iterate(r.left);
+  } else {
+    if (r.right != null) {
+      return left_iterate(r.right);
+    }
+  }
+}
+function right_iterate(r) {
+  if (r != null) {
+    console.log(r.data);
+    if (r.left != null) {
+      console.log(r.left.data);
+    }
+    return left_iterate(r.right);
   }
 }
 
 function print(r) {
+  // debugger;
   if (r != null) {
-    console.log(r.data);
     if (r.left != null) {
       return print(r.left);
-    } else {
+    } else if (r.right != null) {
       return print(r.right);
     }
   }
 }
 
 function show_tree(r) {
-  console.log(root.data);
+  console.log(r.data);
   const cur = r;
   r = r.left;
-  print(r);
+  left_iterate(r);
   r = cur.right;
-  print(r);
+  right_iterate(r);
 }
 console.log(root);
-// show_tree(root);
+show_tree(root);
 
-console.log(get_count(root));
+//remove_el_from_tree(root, 14, root);
