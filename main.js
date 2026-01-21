@@ -43,7 +43,7 @@ function min_in_tree(r) {
 // Помогло с функцией удаления: https://ru.stackoverflow.com/questions/660940/%D0%A3%D0%B4%D0%B0%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5-%D0%B8%D0%B7-%D0%B1%D0%B8%D0%BD%D0%B0%D1%80%D0%BD%D0%BE%D0%B3%D0%BE-%D0%B4%D0%B5%D1%80%D0%B5%D0%B2%D0%B0
 
 function remove_el_from_tree(r, data, parent) {
-  debugger;
+  // debugger;
   if (r != null) {
     if (data > r.data) {
       return remove_el_from_tree(r.right, data, r);
@@ -79,7 +79,7 @@ function remove_el_from_tree(r, data, parent) {
           r.right = null;
           r.right = rr;
         } else {
-          let res = min_in_tree(r.right);
+          let res = min_in_tree(r);
           r.data = res.left.data;
           res.left = null;
         }
@@ -148,47 +148,48 @@ add_el_to_tree(root, 6);
 //   }
 // }
 
-function show_tree(r) {
-  console.log(root.data);
-  const cur = r;
-  if (r.left != null) {
-    r = r.left;
-    iterate(r, r);
-  }
+// function show_tree(r) {
+//   console.log(root.data);
+//   const cur = r;
+//   if (r.left != null) {
+//     r = r.left;
+//     iterate(r, r);
+//   }
 
-  if (cur.right != null) {
-    r = cur.right;
-    iterate(r, r);
-  }
-}
+//   if (cur.right != null) {
+//     r = cur.right;
+//     iterate(r, r);
+//   }
+// }
 
 // default print tree
 
 function show_tree(r) {
   let c = 0;
-
   function iterate(r) {
     if (r != null) {
       iterate(r.left);
-      c++;
       console.log(r.data);
+      c++;
       iterate(r.right);
     }
   }
+
   iterate(root);
 
   return c;
 }
-console.log(root);
+let rr = root;
+console.log(rr);
 
 let c = show_tree(root);
 
 console.log(" ");
-console.log(c);
+console.log(`->${c}`);
 console.log(" ");
-remove_el_from_tree(root, 1, root);
-c = show_tree(root);
-console.log(c);
-// console.log(" ");
 
-// show_tree(root);
+remove_el_from_tree(root, 1, root);
+
+c = show_tree(root);
+console.log(`->${c}`);
+console.log(root);
