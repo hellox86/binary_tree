@@ -109,7 +109,7 @@ add_el_to_tree(root, 6);
 // TEST 2
 // init_tree(0);
 
-// for (let i = 1; i <= 100; i++) {
+// for (let i = 1; i <= 3; i++) {
 //   add_el_to_tree(root, i);
 // }
 
@@ -189,7 +189,6 @@ console.log(`->${c}`);
 console.log(" ");
 
 remove_el_from_tree(root, 1, root);
-
 c = show_tree(root);
 console.log(`->${c}`);
 console.log(root);
